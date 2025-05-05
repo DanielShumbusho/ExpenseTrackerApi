@@ -22,7 +22,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users/register", "/users/login").permitAll() // Allow public access
+                .requestMatchers("/users/**").permitAll() // Allow public access
                 .requestMatchers("/categories").authenticated() // Allow authenticated access to /categories
                 .anyRequest().authenticated() // Secure all other endpoints
             );
