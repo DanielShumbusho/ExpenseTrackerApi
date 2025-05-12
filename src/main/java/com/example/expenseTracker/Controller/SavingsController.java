@@ -14,6 +14,7 @@ import com.example.expenseTracker.Entity.Savings;
 import com.example.expenseTracker.Service.SavingsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -40,6 +41,10 @@ public class SavingsController {
         public ResponseEntity<List<Savings>> getSavingsByUser(@PathVariable UUID userId) {
         List<Savings> savings = savingsService.getSavingsByUser(userId);
         return ResponseEntity.ok(savings);
+    }
+    @DeleteMapping("/{id}")
+    public void deleteSaving(@PathVariable UUID id) {
+        savingsService.deleteSaving(id);
     }
     
     

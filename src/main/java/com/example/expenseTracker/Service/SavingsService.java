@@ -40,4 +40,7 @@ public class SavingsService {
     public List<Savings> getSavingsByUser(UUID userId) {
         return savingsRepository.findByUser_Id(userId);
     }
+    public void deleteSaving(UUID id) {
+        savingsRepository.deleteById(id);
+    }
 }
