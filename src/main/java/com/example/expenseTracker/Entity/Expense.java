@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,10 +31,12 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JsonIgnore
     private Category category;
 
     public UUID getId() {

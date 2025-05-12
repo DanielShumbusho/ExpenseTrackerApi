@@ -29,7 +29,7 @@ public class ExpenseController {
         return expenseService.getAllExpenses();
     }
 
-    @GetMapping("/expenses/user/{userId}")
+    @GetMapping("/user/{userId}")
         public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable UUID userId) {
         List<Expense> expenses = expenseService.getExpensesByUser(userId);
         return ResponseEntity.ok(expenses);

@@ -24,6 +24,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/users/**").permitAll() // Allow public access to users
                 .requestMatchers("/savings/**").permitAll() // Allow public access to users
+                .requestMatchers("/expenses/**").permitAll()
                 .requestMatchers("/categories").authenticated() // Allow authenticated access to /categories
                 .anyRequest().authenticated() // Secure all other endpoints
             );
