@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.expenseTracker.DTOs.LoginRequest;
-import com.example.expenseTracker.DTOs.LoginResponse;
 import com.example.expenseTracker.DTOs.RegisterRequest;
 import com.example.expenseTracker.Entity.User;
 import com.example.expenseTracker.Service.UserService;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -35,21 +34,27 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
+    }
+
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        Optional<User> user = userService.getUserByUserNameAndPassword(
+            request.getName(), request.getPassword()
+        );
+
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest registerRequest) {
         User user = userService.register(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = userService.login(loginRequest);
-        return ResponseEntity.ok(loginResponse);
     }
 
     @GetMapping("/{id}")
@@ -66,4 +71,15 @@ public class UserController {
     public void deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
     }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<?> getUserByUserNameAndPassword(@RequestParam String name, @RequestParam String password) {
+        Optional<User> user = userService.getUserByUserNameAndPassword(name, password);
+        if (user.isPresent()){
+            return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
+    
 }

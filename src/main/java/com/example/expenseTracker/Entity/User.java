@@ -26,14 +26,25 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password", unique = true)
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     
     
     public String getPassword() {

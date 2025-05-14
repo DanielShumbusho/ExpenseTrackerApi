@@ -10,4 +10,6 @@ import com.example.expenseTracker.Entity.User;
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByNameAndPassword(String name, String password);
+
 }

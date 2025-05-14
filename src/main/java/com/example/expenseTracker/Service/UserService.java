@@ -69,4 +69,8 @@ public class UserService {
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
+
+    public Optional<User> getUserByUserNameAndPassword(String name, String password) {
+        return userRepository.findByNameAndPassword(name, password);
+    }
 }

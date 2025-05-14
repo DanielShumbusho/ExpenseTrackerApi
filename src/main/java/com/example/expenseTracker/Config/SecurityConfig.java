@@ -21,11 +21,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(auth -> auth
+            .authorizeHttpRequests(auth -> auth//all the public access are just for testing
                 .requestMatchers("/users/**").permitAll() // Allow public access to users
                 .requestMatchers("/savings/**").permitAll() // Allow public access to users
                 .requestMatchers("/expenses/**").permitAll()
-                .requestMatchers("/categories").authenticated() // Allow authenticated access to /categories
+                .requestMatchers("/categories/**").permitAll()
                 .anyRequest().authenticated() // Secure all other endpoints
             );
         return http.build();
@@ -34,10 +34,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://127.0.0.1:5500")); // Match your frontend URL
+        corsConfiguration.setAllowedOrigins(List.of("*")); // Match your frontend URL
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS
         corsConfiguration.setAllowedHeaders(List.of("*"));
-        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

@@ -30,7 +30,7 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-    @GetMapping("/categories/user/{userId}")
+    @GetMapping("/user/{userId}")
         public ResponseEntity<List<Category>> getCategoriesByUser(@PathVariable UUID userId) {
         List<Category> categories = categoryService.getCategoriesByUser(userId);
         return ResponseEntity.ok(categories);
