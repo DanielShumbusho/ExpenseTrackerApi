@@ -42,23 +42,9 @@ export default function Dashboard() {
     }
   }, [userId]);
 
-  //category shenanigans
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    axios.get(`http://localhost:8080/categories/user/${userId}`)
-      .then(res => {setCategories(res.data); console.log(res)})
-      .catch(err => console.error("Failed to fetch categories:", err));
-  }, [userId]);
-  //the category data mapping part
-  const categoryMap = categories.reduce((map, cat) => {
-  map[cat.id] = cat.name;
-  return map;
-  }, {});
-
   // Expense data and stuff
   const expenseData = expenses.reduce((acc, curr) => {
-  const categoryName = categoryMap[curr.categoryId] || "Unknown";
+  const categoryName = curr.category?.name || "Unknown";
   const existing = acc.find(e => e.name === categoryName);
 
   if (existing) {
@@ -68,32 +54,37 @@ export default function Dashboard() {
   }
 
   return acc;
-  }, []);
-
-//   const expenseData = expenses.reduce((acc, curr) => {
-//   const category = curr.description; // assuming description is the category
-//   const existing = acc.find(e => e.name === category);
-
-//   if (existing) {
-//     existing.value += curr.amount;
-//   } else {
-//     acc.push({ name: category, value: curr.amount });
-//   }
-
-//   return acc;
-// }, []);
+}, []);
 
   const budgetVsExpenseData = [
     { category: 'Food', budget: 500, expense: 400 },
     { category: 'Transport', budget: 300, expense: 280 },
     { category: 'Bills', budget: 400, expense: 350 }
   ];
+//Saving chart fetching, calculations and display
+  const [savings, setSavings] = useState([]);
 
-  const savingsData = [
-    { month: 'Jan', savings: 200 },
-    { month: 'Feb', savings: 300 },
-    { month: 'Mar', savings: 500 }
-  ];
+useEffect(() => {
+  if (userId) {
+    axios
+      .get(`http://localhost:8080/savings/user/${userId}`)
+      .then((res) => {
+        console.log("Fetched savings:", res.data);
+        setSavings(res.data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch savings:", err);
+      });
+  }
+}, [userId]);
+//the actual transformation
+const savingsComparisonData = savings
+  .slice(-2) // last 3 entries
+  .map(goal => ({
+    name: goal.description,
+    current: goal.current_amount,
+    goal: goal.goal_amount
+  }));
 
   return (
     <div className='grid grid-cols-20 grid-rows-20 h-[100vh]'>
@@ -150,13 +141,14 @@ export default function Dashboard() {
           {/* Line Chart */}
           <div className="bg-white p-4 rounded shadow">
             <h4 className="font-semibold mb-2">Savings Over Time</h4>
-            <LineChart width={300} height={250} data={savingsData}>
-              <XAxis dataKey="month" />
+            <BarChart width={300} height={250} data={savingsComparisonData}>
+              <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="savings" stroke="#ff8042" />
-            </LineChart>
+              <Bar dataKey="goal" fill="#8884d8" name="Goal Amount" />
+              <Bar dataKey="current" fill="#82ca9d" name="Current Savings" />
+          </BarChart>
           </div>
         </div>
       </main>

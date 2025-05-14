@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .requestMatchers("/savings/**").permitAll() // Allow public access to users
                 .requestMatchers("/expenses/**").permitAll()
                 .requestMatchers("/categories/**").permitAll()
+                .requestMatchers("/budget/**").permitAll()
                 .anyRequest().authenticated() // Secure all other endpoints
             );
         return http.build();
