@@ -1,9 +1,10 @@
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import './App.css'
-import Login from './components/login'
-import Register from './components/register'
-import Dashboard from './components/dashboard';
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import "./App.css";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Dashboard from "./pages/dashboard";
+import Profile from "./pages/profile";
 
 function App() {
   const [authData, setAuthData] = useState(() => {
@@ -26,14 +27,15 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Login/>}></Route>
-        <Route path='/register' element={<Register/>}></Route>
+        <Route path="/" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route element={<Auth />}>
-          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

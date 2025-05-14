@@ -35,7 +35,7 @@ export default function Login() {
 
     return (
         <div className='flex items-center justify-center h-[100vh]'>
-            <div className='flex flex-col bg-blue-100 p-8 px-16 gap-5 rounded-2xl lg:bg-red-100'>
+            <div className='flex flex-col bg-blue-100 p-8 px-16 gap-5 rounded-2xl lg:bg-green-500'>
                 <h1 className='text-2xl text-center'>Login</h1>
                 <label htmlFor="">Username</label>
                 <input 

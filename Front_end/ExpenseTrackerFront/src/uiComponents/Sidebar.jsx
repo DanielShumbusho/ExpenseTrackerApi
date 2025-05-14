@@ -21,7 +21,7 @@ const Sidebar = () => {
             </ul>
           </div>
     </section> */}
-     <section className='row-span-19 col-span-4 p-4 bg-gray-700 text-white'>
+     <section className='row-span-19 col-span-4 p-4 bg-green-700 text-white'>
          <div>
              <ul className='flex flex-col gap-3'>
                  <li><Link to="/dashboard" className="block hover:bg-blue-600 p-2 rounded">Dashboard</Link></li>

@@ -30,7 +30,7 @@ public class Expense {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "date")
+    @Column(name = "date", columnDefinition = "DATE DEFAULT CURRENT_DATE")
     private LocalDate date;
 
     @ManyToOne
