@@ -46,6 +46,17 @@ public class SavingsController {
     public void deleteSaving(@PathVariable UUID id) {
         savingsService.deleteSaving(id);
     }
-    
+    @DeleteMapping("/deleteByName/{userId}/{description}")
+    public ResponseEntity<String> deleteSavingByName(
+    @PathVariable UUID userId,
+    @PathVariable String description
+    ) {
+    boolean deleted = savingsService.deleteSavingByName(userId, description);
+    if (deleted) {
+        return ResponseEntity.ok("Saving with name '" + description + "' deleted.");
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Saving not found.");
+    }
+    }
     
 }

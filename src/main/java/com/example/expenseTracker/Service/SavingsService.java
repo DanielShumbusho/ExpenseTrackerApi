@@ -3,6 +3,7 @@ package com.example.expenseTracker.Service;
 import java.util.List;
 import java.util.UUID;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,4 +44,13 @@ public class SavingsService {
     public void deleteSaving(UUID id) {
         savingsRepository.deleteById(id);
     }
+    public boolean deleteSavingByName(UUID userId, String description) {
+    Optional<Savings> savingOpt = savingsRepository.findByUserIdAndDescription(userId, description);
+    if (savingOpt.isPresent()) {
+        savingsRepository.delete(savingOpt.get());
+        return true;
+    } else {
+        return false;
+    }
+}
 }
