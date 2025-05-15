@@ -5,6 +5,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import Profile from "./pages/profile";
+import Savings from "./pages/savings";
 
 function App() {
   const [authData, setAuthData] = useState(() => {
@@ -32,6 +33,7 @@ function App() {
         <Route element={<Auth />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/savings" element={<Savings />} />
         </Route>
       </Routes>
     </>
