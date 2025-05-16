@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../uiComponents/Navbar";
 import Sidebar from "../uiComponents/Sidebar";
 import Footer from "../uiComponents/Footer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   PieChart,
   Pie,
@@ -33,6 +35,7 @@ export default function Dashboard() {
   };
 
   //the most annoying part i call the information fetching
+  //fetching the expenses that i will compare to the budget
   useEffect(() => {
     if (userId) {
       axios
@@ -124,7 +127,7 @@ export default function Dashboard() {
   return (
     <div className="grid grid-cols-20 grid-rows-20 h-[100vh]">
       <Sidebar />
-      <main className="row-span-19 col-span-16 bg-blue-50 p-6 overflow-auto">
+      <main className="row-span-19 col-span-17 bg-blue-50 p-6 overflow-auto">
         <h2 className="text-2xl font-semibold text-black mb-2">
           ExpenseTracker
         </h2>

@@ -34,6 +34,11 @@ public class BudgetService {
         Category category = null;
         if(budgetRequest.getCategory_id() != null){
             category = categoryRepository.findById(budgetRequest.getCategory_id()).orElseThrow(() -> new RuntimeException("Category not found"));
+
+            boolean exists = budgetRepository.existsByUserIdAndCategoryId(user.getId(), category.getId());
+            if (exists) {
+                throw new RuntimeException("Budget for this category already exists for the user.");
+            }
         }
 
         //Create the budget entity
@@ -59,5 +64,9 @@ public class BudgetService {
 
     public List<Budget> getOverallBudgetsByUser(UUID userId){
         return budgetRepository.findByUser_IdAndCategoryIsNull(userId);
+    }
+
+    public boolean budgetExists(UUID userId, UUID categoryId) {
+    return budgetRepository.existsByUserIdAndCategoryId(userId, categoryId);
     }
 }

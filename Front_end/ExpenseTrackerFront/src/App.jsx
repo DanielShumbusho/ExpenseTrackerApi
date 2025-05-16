@@ -6,6 +6,7 @@ import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import Profile from "./pages/profile";
 import Savings from "./pages/savings";
+import BudgetsVexpenses from "./pages/budgetVsExpenses";
 
 function App() {
   const [authData, setAuthData] = useState(() => {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/savings" element={<Savings />} />
+          <Route path="/budgetsVexpenses" element={<BudgetsVexpenses />} />
         </Route>
       </Routes>
     </>

@@ -13,6 +13,7 @@ import com.example.expenseTracker.DTOs.SavingsRequest;
 import com.example.expenseTracker.Entity.Savings;
 import com.example.expenseTracker.Service.SavingsService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class SavingsController {
         Savings savedSavings = savingsService.createSavings(savingRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSavings);
     }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Savings>> getSavingsByUSer(@PathVariable UUID userId) {
         List<Savings> savings = savingsService.getSavingsByUser(userId);
@@ -42,10 +44,12 @@ public class SavingsController {
         List<Savings> savings = savingsService.getSavingsByUser(userId);
         return ResponseEntity.ok(savings);
     }
+
     @DeleteMapping("/{id}")
     public void deleteSaving(@PathVariable UUID id) {
         savingsService.deleteSaving(id);
     }
+
     @DeleteMapping("/deleteByName/{userId}/{description}")
     public ResponseEntity<String> deleteSavingByName(
     @PathVariable UUID userId,
@@ -54,6 +58,20 @@ public class SavingsController {
     boolean deleted = savingsService.deleteSavingByName(userId, description);
     if (deleted) {
         return ResponseEntity.ok("Saving with name '" + description + "' deleted.");
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Saving not found.");
+    }
+    }
+
+    @PutMapping("/updateByName/{userId}/{description}")
+    public ResponseEntity<String> updateSavingByName(
+    @PathVariable UUID userId,
+    @PathVariable String description,
+    @RequestBody SavingsRequest savingsRequest
+    ) {
+    boolean updated = savingsService.updateSavingByName(userId, description, savingsRequest);
+    if (updated) {
+        return ResponseEntity.ok("Saving updated successfully.");
     } else {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Saving not found.");
     }

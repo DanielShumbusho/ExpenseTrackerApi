@@ -52,5 +52,26 @@ public class SavingsService {
     } else {
         return false;
     }
+    }
+
+    public boolean updateSavingByName(UUID userId, String description, SavingsRequest updatedData) {
+    Optional<Savings> existingOpt = savingsRepository.findByUserIdAndDescription(userId, description);
+    if (existingOpt.isPresent()) {
+        Savings existing = existingOpt.get();
+        if (updatedData.getGoal_amount() != null) {
+            existing.setGoal_amount(updatedData.getGoal_amount());
+        }
+        if (updatedData.getCurrent_amount() != null) {
+            existing.setCurrent_amount(updatedData.getCurrent_amount());
+        }
+        if (updatedData.getDescription() != null && !updatedData.getDescription().isEmpty()) {
+            existing.setDescription(updatedData.getDescription());
+        }
+
+        savingsRepository.save(existing);
+        return true;
+    }
+    return false;
 }
+
 }
