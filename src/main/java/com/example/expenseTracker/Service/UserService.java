@@ -24,6 +24,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     public User register(RegisterRequest registerRequest) {
         User user = new User();
         user.setEmail(registerRequest.getEmail());
@@ -39,6 +42,8 @@ public class UserService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
+
+        generateAndSaveVerificationCode(user.getId());
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setId(user.getId());
@@ -84,7 +89,9 @@ public class UserService {
             user.setCodeExpirationTime(LocalDateTime.now().plusMinutes(5)); // expires in 5 mins
             userRepository.save(user);
 
-            // Simulate sending email (replace with actual email logic)
+            //his will send the code and prints it in case i'm broke and has no data
+            System.out.println("2FA code for " + user.getEmail() + ": " + code);
+            emailService.send2FACode(user.getEmail(), code);
             System.out.println("2FA code for " + user.getEmail() + ": " + code);
         });
     }
