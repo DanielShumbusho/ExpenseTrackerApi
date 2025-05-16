@@ -1,6 +1,7 @@
 package com.example.expenseTracker.Controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.expenseTracker.DTOs.CodeVerificationRequest;
 import com.example.expenseTracker.DTOs.LoginRequest;
 import com.example.expenseTracker.DTOs.RegisterRequest;
 import com.example.expenseTracker.Entity.User;
@@ -74,12 +76,33 @@ public class UserController {
 
     @GetMapping("/getUser")
     public ResponseEntity<?> getUserByUserNameAndPassword(@RequestParam String name, @RequestParam String password) {
-        Optional<User> user = userService.getUserByUserNameAndPassword(name, password);
-        if (user.isPresent()){
-            return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+        Optional<User> userOpt = userService.getUserByUserNameAndPassword(name, password);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+
+            // Generate & send code
+            userService.generateAndSaveVerificationCode(user.getId());
+
+            // Return only the user ID for now
+            return ResponseEntity.ok(Map.of(
+                "userId", user.getId(),
+                "message", "Verification code sent to your email"
+            ));
         } else {
-            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.NOT_FOUND);
         }
     }
-    
+
+    @PostMapping("/verify-code")
+    public ResponseEntity<?> verify2FACode(@RequestBody CodeVerificationRequest request) {
+        boolean isValid = userService.verifyCode(request.getUserId(), request.getCode());
+
+        if (isValid) {
+            Optional<User> user = userService.getUserById(request.getUserId());
+            return ResponseEntity.ok(user.get());
+        } else {
+            return new ResponseEntity<>("Invalid or expired code", HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

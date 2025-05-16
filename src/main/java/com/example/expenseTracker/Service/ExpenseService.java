@@ -66,4 +66,8 @@ public class ExpenseService {
         expense.setId(id);
         return expenseRepository.save(expense);
     }
+
+    public List<Expense> getExpensesByCategory(UUID categoryId) {
+    return expenseRepository.findByCategoryId(categoryId);
+    }
 }

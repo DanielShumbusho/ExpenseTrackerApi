@@ -32,7 +32,7 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/expenses"
+                to="/savings"
                 className="block hover:bg-blue-600 p-2 rounded"
               >
                 Savings

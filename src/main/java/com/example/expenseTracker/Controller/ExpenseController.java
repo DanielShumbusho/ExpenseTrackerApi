@@ -31,9 +31,15 @@ public class ExpenseController {
 
     @GetMapping("/user/{userId}")
         public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable UUID userId) {
-        List<Expense> expenses = expenseService.getExpensesByUser(userId);
-        return ResponseEntity.ok(expenses);
-    }
+            List<Expense> expenses = expenseService.getExpensesByUser(userId);
+            return ResponseEntity.ok(expenses);
+        }
+
+    @GetMapping("/category/{categoryId}")
+        public ResponseEntity<List<Expense>> getExpensesByCategory(@PathVariable UUID categoryId) {
+            List<Expense> expenses = expenseService.getExpensesByCategory(categoryId);
+            return ResponseEntity.ok(expenses);
+        }
 
     @PostMapping
     public ResponseEntity<Expense> createExpense(@RequestBody ExpenseRequest expenseRequest) {

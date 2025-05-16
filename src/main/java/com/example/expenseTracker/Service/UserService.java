@@ -1,7 +1,9 @@
 package com.example.expenseTracker.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +74,37 @@ public class UserService {
 
     public Optional<User> getUserByUserNameAndPassword(String name, String password) {
         return userRepository.findByNameAndPassword(name, password);
+    }
+
+    public void generateAndSaveVerificationCode(UUID userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        userOpt.ifPresent(user -> {
+            String code = String.format("%06d", new Random().nextInt(999999));
+            user.setVerificationCode(code);
+            user.setCodeExpirationTime(LocalDateTime.now().plusMinutes(5)); // expires in 5 mins
+            userRepository.save(user);
+
+            // Simulate sending email (replace with actual email logic)
+            System.out.println("2FA code for " + user.getEmail() + ": " + code);
+        });
+    }
+
+    public boolean verifyCode(UUID userId, String code) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) return false;
+
+        User user = userOpt.get();
+        boolean isValid = user.getVerificationCode() != null
+                && user.getVerificationCode().equals(code)
+                && user.getCodeExpirationTime() != null
+                && user.getCodeExpirationTime().isAfter(LocalDateTime.now());
+
+        if (isValid) {
+            user.setVerificationCode(null); // clear after use
+            user.setCodeExpirationTime(null);
+            userRepository.save(user);
+        }
+
+        return isValid;
     }
 }

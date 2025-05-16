@@ -1,5 +1,6 @@
 package com.example.expenseTracker.Entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,27 @@ public class User {
 
     @Column(name = "role")
     private String role;
+
+    private String verificationCode;
+    private LocalDateTime codeExpirationTime;
+
+    
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getCodeExpirationTime() {
+        return codeExpirationTime;
+    }
+
+    public void setCodeExpirationTime(LocalDateTime codeExpirationTime) {
+        this.codeExpirationTime = codeExpirationTime;
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
