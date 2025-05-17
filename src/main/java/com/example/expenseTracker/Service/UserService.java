@@ -69,8 +69,15 @@ public class UserService {
         if (!userOptional.isPresent()) {
             return null;
         }
-        user.setId(id);
-        return userRepository.save(user);
+        User existingUser = userOptional.get();
+    
+        // Update only the fields you allow to change
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        // Avoid touching password or role unless intentional
+        // Avoid replacing relationships like categories or expenses
+
+        return userRepository.save(existingUser);
     }
 
     public void deleteUser(UUID id) {

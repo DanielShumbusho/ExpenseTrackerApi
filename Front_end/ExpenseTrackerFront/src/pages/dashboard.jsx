@@ -132,7 +132,7 @@ export default function Dashboard() {
           ExpenseTracker
         </h2>
         <h1 className="text-3xl font-bold text-black mb-4">
-          Welcome, {user?.name || "User"}! user ID: {userId}
+          Welcome, {user?.name || "User"}!
         </h1>
 
         {/* Stats Cards */}

@@ -17,48 +17,47 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/dashboard"
-                className="block hover:bg-blue-600 p-2 rounded"
+                className="block hover:bg-black p-2 w-50 rounded"
               >
                 Dashboard
               </Link>
             </li>
             <li>
               <Link
-                to="/budgetsVexpenses"
-                className="block hover:bg-blue-600 p-2 rounded"
-              >
-                Budgets vs Expenses
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/savings"
-                className="block hover:bg-blue-600 p-2 rounded"
+                className="block hover:bg-black p-2 w-50 rounded"
               >
                 Savings
               </Link>
             </li>
             <li>
               <Link
-                to="/categories"
-                className="block hover:bg-blue-600 p-2 rounded"
+                to="/budgetsVexpenses"
+                className="block hover:bg-black p-2 w-50 rounded"
               >
-                Categories
+                Budgets vs Expenses
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/categories"
+                className="block hover:bg-black p-2 w-50 rounded"
+              >
+                Overview of tables
               </Link>
             </li>
             <li>
               <Link
                 to="/profile"
-                className="block hover:bg-blue-600 p-2 rounded"
+                className="block hover:bg-black p-2 w-50 rounded"
               >
                 Profile
               </Link>
             </li>
           </ul>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-          >
+          <br></br>
+          <div className="h-65"></div>
+          <button onClick={handleLogout} class="critical">
             Logout
           </button>
         </div>

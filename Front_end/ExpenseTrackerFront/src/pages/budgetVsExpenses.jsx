@@ -228,8 +228,8 @@ export default function BudgetsVexpenses() {
   return (
     <div className="grid grid-cols-20 grid-rows-20 h-[100vh]">
       <Sidebar />
-      <ToastContainer />
-      <main className="row-span-18 col-span-17 bg-blue-50 p-6 overflow-auto">
+      <main className="row-span-19 col-span-17 bg-blue-50 p-6 overflow-auto">
+        <ToastContainer />
         <h1 className="text-3xl font-bold text-black mb-6">
           Budget vs Expense Overview
         </h1>

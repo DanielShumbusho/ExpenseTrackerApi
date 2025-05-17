@@ -234,10 +234,7 @@ export default function Savings() {
             value={toBeDeleted}
             onChange={(e) => setToBeDeleted(e.target.value)}
           />
-          <button
-            className="bg-blue-700 text-white font-bold mx-5 p-2"
-            onClick={deleteSaving}
-          >
+          <button class="critical" onClick={deleteSaving}>
             Delete
           </button>
         </div>
