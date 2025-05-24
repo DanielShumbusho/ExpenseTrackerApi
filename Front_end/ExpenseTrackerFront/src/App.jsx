@@ -7,6 +7,9 @@ import Dashboard from "./pages/dashboard";
 import Profile from "./pages/profile";
 import Savings from "./pages/savings";
 import BudgetsVexpenses from "./pages/budgetVsExpenses";
+import ForgotPassword from "./pages/forgotPassword";
+import VerifyResetCode from "./pages/verifyResetCode";
+import ResetPassword from "./pages/resetPassword";
 
 function App() {
   const [authData, setAuthData] = useState(() => {
@@ -31,6 +34,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-reset-code" element={<VerifyResetCode />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route element={<Auth />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />

@@ -106,7 +106,7 @@ export default function Login() {
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
         <p>
-          <a href="/register">Forgot your password?</a>
+          <Link to="/forgot-password">Forgot your password?</Link>
         </p>
       </div>
       <ToastContainer position="top-right" autoClose={3000} />

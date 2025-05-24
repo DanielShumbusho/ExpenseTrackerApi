@@ -39,7 +39,7 @@ export default function Register() {
 
   return (
     <div className="flex items-center justify-center h-[100vh]">
-      <div className="flex flex-col bg-blue-100 p-8 px-16 gap-5 rounded-2xl lg:bg-red-100">
+      <div className="flex flex-col bg-blue-100 p-8 px-16 gap-5 rounded-2xl lg:bg-green-500">
         <h1 className="text-2xl text-center">Register</h1>
         <label htmlFor="">Username: </label>
         <input
@@ -48,8 +48,6 @@ export default function Register() {
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
         />
-        <br></br>
-        <br></br>
         <label htmlFor="">Email: </label>
         <input
           type="text"
@@ -57,8 +55,6 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <br></br>
-        <br></br>
         <label htmlFor="">Password: </label>
         <input
           type="password"
@@ -66,8 +62,6 @@ export default function Register() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <br></br>
-        <br></br>
         <button
           className="bg-blue-700 text-white font-bold mx-5 p-2"
           onClick={handleRegister}

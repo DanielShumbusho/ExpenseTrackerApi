@@ -43,6 +43,10 @@ public class UserService {
             throw new RuntimeException("Invalid password");
         }
 
+        System.out.println("Raw password: " + loginRequest.getPassword());
+        System.out.println("Encoded in DB: " + user.getPassword());
+        System.out.println("Match result: " + passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()));
+
         generateAndSaveVerificationCode(user.getId());
 
         LoginResponse loginResponse = new LoginResponse();
@@ -71,11 +75,8 @@ public class UserService {
         }
         User existingUser = userOptional.get();
     
-        // Update only the fields you allow to change
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
-        // Avoid touching password or role unless intentional
-        // Avoid replacing relationships like categories or expenses
 
         return userRepository.save(existingUser);
     }
@@ -84,8 +85,15 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Optional<User> getUserByUserNameAndPassword(String name, String password) {
-        return userRepository.findByNameAndPassword(name, password);
+    public Optional<User> getUserByUserNameAndPassword(String name, String rawPassword) {
+        Optional<User> userOpt = userRepository.findByName(name);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 
     public void generateAndSaveVerificationCode(UUID userId) {
@@ -120,5 +128,19 @@ public class UserService {
         }
 
         return isValid;
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+    return userRepository.findByEmail(email);
+    }
+
+    public boolean updatePassword(UUID userId, String newPassword) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) return false;
+
+        User user = userOpt.get();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
     }
 }

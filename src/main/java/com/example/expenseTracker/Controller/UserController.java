@@ -105,4 +105,29 @@ public class UserController {
             return new ResponseEntity<>("Invalid or expired code", HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> sendResetCode(@RequestParam String email) {
+        Optional<User> userOpt = userService.getUserByEmail(email);
+        if (userOpt.isPresent()) {
+            userService.generateAndSaveVerificationCode(userOpt.get().getId());
+            return ResponseEntity.ok("Verification code sent to your email");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+    @PostMapping("/verify-reset-code")
+    public ResponseEntity<?> verifyResetCode(@RequestBody CodeVerificationRequest request) {
+        boolean isValid = userService.verifyCode(request.getUserId(), request.getCode());
+        return isValid ? ResponseEntity.ok("Code verified") :
+                        ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired code");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam UUID userId, @RequestParam String newPassword) {
+        boolean success = userService.updatePassword(userId, newPassword);
+        return success ? ResponseEntity.ok("Password reset successfully") :
+                        ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password reset failed");
+    }
 }
